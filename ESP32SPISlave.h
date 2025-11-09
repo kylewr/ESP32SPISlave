@@ -43,8 +43,8 @@ static QueueHandle_t s_in_flight_mailbox_handle {NULL};
 
 using spi_slave_user_cb_t = std::function<void(spi_slave_transaction_t*, void*)>;
 
-void spi_slave_post_setup_cb(spi_slave_transaction_t* trans);
-void spi_slave_post_trans_cb(spi_slave_transaction_t* trans);
+static inline void spi_slave_post_setup_cb(spi_slave_transaction_t* trans);
+static inline void spi_slave_post_trans_cb(spi_slave_transaction_t* trans);
 struct spi_slave_context_t
 {
     spi_slave_interface_config_t if_cfg {
@@ -100,7 +100,7 @@ struct spi_slave_cb_user_context_t
     } post_trans;
 };
 
-void IRAM_ATTR spi_slave_post_setup_cb(spi_slave_transaction_t* trans)
+static inline void IRAM_ATTR spi_slave_post_setup_cb(spi_slave_transaction_t* trans)
 {
     spi_slave_cb_user_context_t *user_ctx = static_cast<spi_slave_cb_user_context_t*>(trans->user);
     if (user_ctx->post_setup.user_cb) {
@@ -108,7 +108,7 @@ void IRAM_ATTR spi_slave_post_setup_cb(spi_slave_transaction_t* trans)
     }
 }
 
-void IRAM_ATTR spi_slave_post_trans_cb(spi_slave_transaction_t* trans)
+static inline void IRAM_ATTR spi_slave_post_trans_cb(spi_slave_transaction_t* trans)
 {
     spi_slave_cb_user_context_t *user_ctx = static_cast<spi_slave_cb_user_context_t*>(trans->user);
     if (user_ctx->post_trans.user_cb) {
@@ -116,7 +116,7 @@ void IRAM_ATTR spi_slave_post_trans_cb(spi_slave_transaction_t* trans)
     }
 }
 
-void spi_slave_task(void *arg)
+static inline void spi_slave_task(void *arg)
 {
     ESP_LOGD(TAG, "spi_slave_task start");
 
